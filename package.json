@@ -1,6 +1,7 @@
 {
   "name": "tools",
   "version": "1.0.0",
+  "type": "module",
   "description": "Some useful tools.",
   "main": "index.js",
   "scripts": {
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/gsysbrj/tools/issues"
   },
-  "homepage": "https://github.com/gsysbrj/tools#readme"
+  "homepage": "https://github.com/gsysbrj/tools#readme",
+  "dependencies": {
+    "iconv-lite": "^0.6.2"
+  }
 }
