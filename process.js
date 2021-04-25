@@ -2,7 +2,8 @@
 import fs from 'fs/promises';
 import iconv from 'iconv-lite';
 
-const path = '/Users/mac/codes/my/chzhshch/fxgan.com/';
+// const path = '/Users/mac/codes/my/chzhshch/fxgan.com/';
+const path = '/Users/l/codes/chzhshch/fxgan.com/';
 
 const files = await fs.readdir(path, {
     withFileTypes: true,
@@ -14,7 +15,7 @@ for (const file of files) {
             // encoding: 'GBK',
         })
         // console.log(content)
-        // 若是GBK编码，则以gbk解码
+        // 若是GBK编码，则以gbk解码(GBK编码以utf8解码，结果中除了汉字是乱码，其他都正常)
         if (content.includes('charset=GBK', 0, 'UTF8')) {
             content = iconv.decode(content, 'gbk');
             content = content.replace('charset=GBK', 'charset=UTF8')
