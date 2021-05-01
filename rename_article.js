@@ -18,45 +18,38 @@ let files = await fs.readdir(path, {
 });
 files = files.filter(f => f.isFile() && f.name.endsWith('.html') && !f.name.startsWith(prefix) && !f.name.startsWith('目录'))
 for (const file of files) {
-    if (file.name.startsWith(prefix)) {
-        continue
-    }
     let filePath = path +'/'+ file.name
-    let data = await fs.readFile(filePath)
-    let info = jschardet.detect(data)
-    if (info.encoding === 'UTF-8') {
-        let content = iconv.decode(data, info.encoding);
-        const titleMatch = content.match(reTitle)
-        if (titleMatch) {
-            const title = titleMatch[1]
-            const pubtimeMatch = content.match(rePubtime)
-            const pubtime = pubtimeMatch[1]
-            const time = moment(pubtime, "YYYY/M/D H:mm:ss").format('YYYYMMDDHHmmss')
-            const newFileName = prefix + time + '.html'
-            const oldFilesDirName = file.name.slice(0, -5) + '_files'
-            const neweFilesDirName = prefix + time + '_files'
-            const line = `${oldFilesDirName}--->${neweFilesDirName}--->${newFileName}--->（${pubtime}）`;
-            // 替换文件内容中的目录名
-            content = content.split(oldFilesDirName).join(neweFilesDirName);
-            console.log(line)
-            // 替换完写回内容
-            await fs.writeFile(filePath, content)
-            // 新文件名若存在删除之
-            await fs.rm(path + '/' + newFileName, {
-                force: true,
-                recursive: true,
-            })
-            await fs.rm(path + '/' + neweFilesDirName, {
-                force: true,
-                recursive: true,
-            })
-            // 重命名
-            await fs.rename(filePath, path + '/' + newFileName)
-            await fs.rename(path + '/' + oldFilesDirName, path + '/' + neweFilesDirName)
-            lines.push(line)
-        } else {
-            console.log(filePath + ': title not found')
-        }
+    let content = await fs.readFile(filePath, 'utf-8')
+    const titleMatch = content.match(reTitle)
+    if (titleMatch) {
+        const title = titleMatch[1]
+        const pubtimeMatch = content.match(rePubtime)
+        const pubtime = pubtimeMatch[1]
+        const time = moment(pubtime, "YYYY/M/D H:mm:ss").format('YYYYMMDDHHmmss')
+        const newFileName = prefix + time + '.html'
+        const oldFilesDirName = file.name.slice(0, -5) + '_files'
+        const neweFilesDirName = prefix + time + '_files'
+        const line = `${oldFilesDirName}--->${neweFilesDirName}--->${newFileName}--->（${pubtime}）`;
+        // 替换文件内容中的目录名
+        content = content.split(oldFilesDirName).join(neweFilesDirName);
+        console.log(line)
+        // 替换完写回内容
+        await fs.writeFile(filePath, content)
+        // 新文件名若存在删除之
+        await fs.rm(path + '/' + newFileName, {
+            force: true,
+            recursive: true,
+        })
+        await fs.rm(path + '/' + neweFilesDirName, {
+            force: true,
+            recursive: true,
+        })
+        // 重命名
+        await fs.rename(filePath, path + '/' + newFileName)
+        await fs.rename(path + '/' + oldFilesDirName, path + '/' + neweFilesDirName)
+        lines.push(line)
+    } else {
+        console.log(filePath + ': title not found')
     }
 }
 
