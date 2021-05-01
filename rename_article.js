@@ -7,20 +7,16 @@ import moment from 'moment';
 // const root = '/Users/mac/codes/my/chzhshch';
 const root = '/Users/l/codes/chzhshch';
 const path = root + '/fxgan.com';
-const catalog = path + '/目录.html'
-const catalogByClass = root + '/目录-分类.html'
 
 const reTitle = /<h1>(.*?)<\/h1>/;
 const rePubtime = /<span class="pubtime">(.*?)<\/span>/;
 
-const lines = [];
-const infoFilePath = root + '/info.txt'
 const prefix = '缠中说禅博客'
-
+const lines = []
 let files = await fs.readdir(path, {
     withFileTypes: true,
 });
-files = files.filter(f => f.isFile() && f.name.endsWith('.html'))
+files = files.filter(f => f.isFile() && f.name.endsWith('.html') && !f.name.startsWith(prefix) && !f.name.startsWith('目录'))
 for (const file of files) {
     if (file.name.startsWith(prefix)) {
         continue
@@ -29,7 +25,7 @@ for (const file of files) {
     let data = await fs.readFile(filePath)
     let info = jschardet.detect(data)
     if (info.encoding === 'UTF-8') {
-        const content = iconv.decode(data, info.encoding);
+        let content = iconv.decode(data, info.encoding);
         const titleMatch = content.match(reTitle)
         if (titleMatch) {
             const title = titleMatch[1]
@@ -37,12 +33,31 @@ for (const file of files) {
             const pubtime = pubtimeMatch[1]
             const time = moment(pubtime, "YYYY/M/D H:mm:ss").format('YYYYMMDDHHmmss')
             const newFileName = prefix + time + '.html'
-            const line = `${file.name}--->${newFileName}--->${title}--->（${pubtime}）`;
+            const oldFilesDirName = file.name.slice(0, -5) + '_files'
+            const neweFilesDirName = prefix + time + '_files'
+            const line = `${oldFilesDirName}--->${neweFilesDirName}--->${newFileName}--->（${pubtime}）`;
+            // 替换文件内容中的目录名
+            content = content.split(oldFilesDirName).join(neweFilesDirName);
             console.log(line)
+            // 替换完写回内容
+            await fs.writeFile(filePath, content)
+            // 新文件名若存在删除之
+            await fs.rm(path + '/' + newFileName, {
+                force: true,
+                recursive: true,
+            })
+            await fs.rm(path + '/' + neweFilesDirName, {
+                force: true,
+                recursive: true,
+            })
+            // 重命名
+            await fs.rename(filePath, path + '/' + newFileName)
+            await fs.rename(path + '/' + oldFilesDirName, path + '/' + neweFilesDirName)
             lines.push(line)
         } else {
             console.log(filePath + ': title not found')
         }
     }
 }
-await fs.writeFile(infoFilePath, lines.join('\n'));
+
+await fs.writeFile('info.txt', lines.join('\n'))
