@@ -4,28 +4,28 @@ import iconv from 'iconv-lite';
 import moment from 'moment';
 
 // 生成文件信息
-const root = '/Users/mac/codes/my/chzhshch';
-
-const path = root + '/fxgan.com/';
-// const path = root + '/fxgan.com/';
-const catalog = root + '/fxgan.com/目录.html'
-const catalogByClass = root + '/fxgan.com/目录-分类.html'
+// const root = '/Users/mac/codes/my/chzhshch';
+const root = '/Users/l/codes/chzhshch';
+const path = root + '/fxgan.com';
+const catalog = path + '/目录.html'
+const catalogByClass = root + '/目录-分类.html'
 
 const reTitle = /<h1>(.*?)<\/h1>/;
 const rePubtime = /<span class="pubtime">(.*?)<\/span>/;
 
 const lines = [];
 const infoFilePath = root + '/info.txt'
+const prefix = '缠中说禅博客'
 
 let files = await fs.readdir(path, {
     withFileTypes: true,
 });
 files = files.filter(f => f.isFile() && f.name.endsWith('.html'))
 for (const file of files) {
-    if (file.name.startsWith('缠中说禅博客')) {
+    if (file.name.startsWith(prefix)) {
         continue
     }
-    let filePath = path + file.name
+    let filePath = path +'/'+ file.name
     let data = await fs.readFile(filePath)
     let info = jschardet.detect(data)
     if (info.encoding === 'UTF-8') {
@@ -36,7 +36,7 @@ for (const file of files) {
             const pubtimeMatch = content.match(rePubtime)
             const pubtime = pubtimeMatch[1]
             const time = moment(pubtime, "YYYY/M/D H:mm:ss").format('YYYYMMDDHHmmss')
-            const newFileName = '缠中说禅博客' + time + '.html'
+            const newFileName = prefix + time + '.html'
             const line = `${file.name}--->${newFileName}--->${title}--->（${pubtime}）`;
             console.log(line)
             lines.push(line)
