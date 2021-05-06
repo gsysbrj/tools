@@ -18,7 +18,7 @@ for (const file of files) {
     if (info.encoding !== 'UTF-8') {
         console.log(file.name, info)
         content = iconv.decode(content, info.encoding);
-        content = content.replace('charset=GBK', 'charset=UTF-8')
+        content = content.replace(/<meta.*?charset.*?>/i, '<meta charset="utf-8">')
         await fs.writeFile(filePath, content)
     }
 }

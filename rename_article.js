@@ -16,7 +16,11 @@ const lines = []
 let files = await fs.readdir(path, {
     withFileTypes: true,
 });
-files = files.filter(f => f.isFile() && f.name.endsWith('.html') && !f.name.startsWith(prefix) && !f.name.startsWith('目录'))
+files = files.filter(f => f.isFile() && f.name.endsWith('.html')
+                            && !f.name.startsWith(prefix)
+                            && !f.name.startsWith('目录')
+                            && !f.name.startsWith('首页')
+                    )
 for (const file of files) {
     let filePath = path +'/'+ file.name
     let content = await fs.readFile(filePath, 'utf-8')
