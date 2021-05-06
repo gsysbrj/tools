@@ -12,7 +12,6 @@ const reTitle = /<h1>(.*?)<\/h1>/;
 const rePubtime = /<span class="pubtime">(.*?)<\/span>/;
 
 const prefix = '缠中说禅博客'
-const lines = []
 let files = await fs.readdir(path, {
     withFileTypes: true,
 });
@@ -51,10 +50,7 @@ for (const file of files) {
         // 重命名
         await fs.rename(filePath, path + '/' + newFileName)
         await fs.rename(path + '/' + oldFilesDirName, path + '/' + neweFilesDirName)
-        lines.push(line)
     } else {
         console.log(filePath + ': title not found')
     }
 }
-
-await fs.writeFile('info.txt', lines.join('\n'))
