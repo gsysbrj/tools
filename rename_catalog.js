@@ -3,7 +3,6 @@ import jschardet from "jschardet";
 import iconv from 'iconv-lite';
 import moment from 'moment';
 
-// 生成文件信息
 // const root = '/Users/mac/codes/my/chzhshch';
 const root = '/Users/l/codes/chzhshch';
 const path = root + '/fxgan.com';
