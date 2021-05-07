@@ -33,6 +33,14 @@ for (const file of files) {
     }
     // 修复一些链接
     content = content.replace(/<a href="http:\/\/fxgan.com\/chan_time.*?">回目录<\/a>/ig, '<a href="目录.html">回目录</a>')
+    // 添加最新回复
+    if (!content.includes('\"divReply2\"')){
+        content = content.replace("<div id=\"divReply\">", `<div id="divReply2">
+        <h2>最新回复</h2>
+        <reply-item v-for="reply in replyList" :reply="reply" :key="reply.mid"></reply-item>
+    </div>
+    <div id="divReply">`);
+    }
 
     // 以utf8编码写入
     await fs.writeFile(path + '/' + file.name, content);
