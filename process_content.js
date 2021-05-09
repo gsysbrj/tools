@@ -29,10 +29,13 @@ for (const file of files) {
     content = content.replace(/<script type="text\/javascript">.*?<\/script>/igs, '');
     // --- 引入a.js和a.css
     if (!content.includes('src="a.js"')) {
-        content = content.replace('</head>', '\n<link href="a.css" rel="stylesheet">\n<script src="a.js"></script>\n<script src="b.js"></script>\n</head>');
+        content = content.replace('</head>', '\n<link href="a.css" rel="stylesheet">\n</head>');
+        content = content.replace('</body>', '\n<script src="a.js"></script>\n<script src="b.js"></script>\n</body>');
     }
     // 修复一些链接
     content = content.replace(/<a href="http:\/\/fxgan.com\/chan_time.*?">回目录<\/a>/ig, '<a href="目录.html">回目录</a>')
+    // 选中“只展示缠师回复”
+    content = content.replace(/<input type="checkbox" onclick="toggleGuestReply\(\)">/ig, '<input type="checkbox" checked >')
     // 添加最新回复
     // if (!content.includes('\"divReply2\"')){
     //     content = content.replace("<div id=\"divReply\">", `<div id="divReply2">
