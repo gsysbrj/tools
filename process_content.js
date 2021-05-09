@@ -26,7 +26,7 @@ for (const file of files) {
     // --- 删除hm.js和jquery-1.11.0.min.js引用
     content = content.replace(/<script src=\".*?_files\/hm.js\"><\/script>/igs, '');
     content = content.replace(/<script type="text\/javascript" src=".\/.*?_files\/jquery-1.11.0.min.js"><\/script>/igs, '');
-    content = content.replace(/<script type="text\/javascript">window.onerror.*?<\/script>/igs, '');
+    content = content.replace(/<script type="text\/javascript">.*?<\/script>/igs, '');
     // --- 引入a.js和a.css
     if (!content.includes('src="a.js"')) {
         content = content.replace('</head>', '\n<link href="a.css" rel="stylesheet">\n<script src="a.js"></script>\n<script src="b.js"></script>\n</head>');
