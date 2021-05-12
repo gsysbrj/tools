@@ -24,7 +24,7 @@ async function process (path) {
         return replacement;
     });
     console.log(content)
-    await fs.writeFile(path, content);  
+    await fs.writeFile(path, content);
 }
 
 process(catalog)
