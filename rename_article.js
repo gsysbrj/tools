@@ -21,6 +21,7 @@ files = files.filter(f => f.isFile() && f.name.endsWith('.html')
                             && !f.name.startsWith('首页')
                     )
 for (const file of files) {
+    console.log('rename_article:', file.name)
     let filePath = path +'/'+ file.name
     let content = await fs.readFile(filePath, 'utf-8')
     const titleMatch = content.match(reTitle)

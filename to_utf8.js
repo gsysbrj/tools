@@ -12,6 +12,7 @@ let files = await fs.readdir(path, {
 });
 files = files.filter(f => f.isFile() && f.name.endsWith('.html'))
 for (const file of files) {
+    console.log(file.name)
     let filePath = path + file.name
     let content = await fs.readFile(filePath)
     let info = jschardet.detect(content)
