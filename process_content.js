@@ -15,6 +15,7 @@ let files = await fs.readdir(path, {
 files = files.filter(f => f.isFile() && f.name.endsWith('.html') && f.name.startsWith(prefix))
 
 for (const file of files) {
+    console.log(file.name);
     let filePath = path +'/'+ file.name
     let content = await fs.readFile(filePath, 'utf-8')
     // 添加适配移动设备的meta
@@ -27,6 +28,9 @@ for (const file of files) {
     content = content.replace(/<script src=\".*?_files\/hm.js\"><\/script>/igs, '');
     content = content.replace(/<script type="text\/javascript" src=".\/.*?_files\/jquery-1.11.0.min.js"><\/script>/igs, '');
     content = content.replace(/<script type="text\/javascript">.*?<\/script>/igs, '');
+    // --- 删除style
+    content = content.replace(/<style.*?>.*?<\/style>/igs, '');
+
     // --- 引入a.js和a.css
     if (!content.includes('src="a.js"')) {
         content = content.replace('</head>', '\n<link href="a.css" rel="stylesheet">\n</head>');

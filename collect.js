@@ -2,8 +2,8 @@ import axios from 'axios';
 import fs from 'fs/promises';
 import moment from 'moment';
 
-const root = '/Users/mac/codes/my/chzhshch';
-// const root = '/Users/l/codes/chzhshch';
+// const root = '/Users/mac/codes/my/chzhshch';
+const root = '/Users/l/codes/chzhshch';
 const path = root + '/fxgan.com';
 const catalog = path + '/目录.html'
 const catalogByClass = path + '/目录-分类.html'
