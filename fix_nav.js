@@ -28,22 +28,32 @@ for (const m of catalogByClassContent.matchAll(reLink)) {
 }
 console.log(`times: ${times.length} cats: ${cats.length}`)
 
-let files = await fs.readdir(path, {
-    withFileTypes: true,
-});
-files = files.filter(f => f.isFile() && f.name.endsWith('.html') && f.name.startsWith(prefix))
+// let files = await fs.readdir(path, {
+//     withFileTypes: true,
+// });
+// files = files.filter(f => f.isFile() && f.name.endsWith('.html') && f.name.startsWith(prefix))
 
-for (const file of files) {
-    console.log(file.name)
-    const filePath = path +'/'+ file.name
-    let content = await fs.readFile(filePath, 'utf-8')
-    const index = times.findIndex(item => item.url.startsWith(file.name))
-    const indexCat = cats.findIndex(item => item.url.startsWith(file.name))
+// for (const file of files) {
+//     console.log(file.name)
+//     const filePath = path +'/'+ file.name
+//     let content = await fs.readFile(filePath, 'utf-8')
+//     const index = times.findIndex(item => item.url.startsWith(file.name))
+//     const indexCat = cats.findIndex(item => item.url.startsWith(file.name))
+//     content = content.replace(/<a href=".*?">(上一篇.*?)<\/a>/ig, `<a class="page-prev time" href="${times[index-1]?.url}">上一篇 ${times[index-1]?.title}</a>
+// <a class="page-prev cat" href="${cats[indexCat-1]?.url}">上一篇 ${cats[indexCat-1]?.title}</a>`)
+//     content = content.replace(/<a href=".*?">(下一篇.*?)<\/a>/ig, `<a class="page-next time" href="${times[index+1]?.url}">下一篇 ${times[index+1]?.title}</a>
+// <a class="page-next cat" href="${cats[indexCat+1]?.url}">下一篇 ${cats[indexCat+1]?.title}</a>`)
+
+//     // 以utf8编码写入
+//     await fs.writeFile(filePath, content);
+// }
+
+export default function fixNav(fileName, content) {
+    const index = times.findIndex(item => item.url.startsWith(fileName))
+    const indexCat = cats.findIndex(item => item.url.startsWith(fileName))
     content = content.replace(/<a href=".*?">(上一篇.*?)<\/a>/ig, `<a class="page-prev time" href="${times[index-1]?.url}">上一篇 ${times[index-1]?.title}</a>
 <a class="page-prev cat" href="${cats[indexCat-1]?.url}">上一篇 ${cats[indexCat-1]?.title}</a>`)
     content = content.replace(/<a href=".*?">(下一篇.*?)<\/a>/ig, `<a class="page-next time" href="${times[index+1]?.url}">下一篇 ${times[index+1]?.title}</a>
 <a class="page-next cat" href="${cats[indexCat+1]?.url}">下一篇 ${cats[indexCat+1]?.title}</a>`)
-
-    // 以utf8编码写入
-    await fs.writeFile(filePath, content);
+    return content;
 }

@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import jschardet from "jschardet";
 import iconv from 'iconv-lite';
 import moment from 'moment';
+import fixNav from './fix_nav.js'
 
 // 生成文件信息
 // const root = '/Users/mac/codes/my/chzhshch';
@@ -50,6 +51,8 @@ for (const file of files) {
     // </div>
     // <div id="divReply">`);
     // }
+    // 修复上一篇和下一篇链接
+    content = fixNav(file.name, content)
 
     // 以utf8编码写入
     await fs.writeFile(path + '/' + file.name, content);
