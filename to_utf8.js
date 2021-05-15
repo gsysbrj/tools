@@ -6,11 +6,17 @@ import iconv from 'iconv-lite';
 
 // const path = '/Users/mac/codes/my/chzhshch/fxgan.com/';
 const path = '/Users/l/codes/chzhshch/fxgan.com/';
+const prefix = '缠中说禅博客'
 
 let files = await fs.readdir(path, {
     withFileTypes: true,
 });
-files = files.filter(f => f.isFile() && f.name.endsWith('.html'))
+files = files.filter(f => f.isFile() && f.name.endsWith('.html')
+                            && !f.name.startsWith(prefix)
+                            && !f.name.startsWith('目录')
+                            && !f.name.startsWith('首页')
+                    )
+
 for (const file of files) {
     console.log(file.name)
     let filePath = path + file.name

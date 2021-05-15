@@ -41,7 +41,7 @@ for (const file of files) {
     // 选中“只展示缠师回复”
     content = content.replace(/<input type="checkbox" onclick="toggleGuestReply\(\)">/ig, '<input type="checkbox" checked >')
     // 替换图片路径
-    content = content.replace(/\/.*?_files\/(?=.*?\.(gif|jpeg|png))/ig, '/images/')
+    content = content.replace(/\/.*?_files\/(?=.*?\.(gif|jpe?g|png))/ig, '/images/')
     // 添加最新回复
     // if (!content.includes('\"divReply2\"')){
     //     content = content.replace("<div id=\"divReply\">", `<div id="divReply2">
