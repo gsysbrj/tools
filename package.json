@@ -22,5 +22,8 @@
     "iconv-lite": "^0.6.2",
     "jschardet": "^3.0.0",
     "moment": "^2.29.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0"
   }
 }
