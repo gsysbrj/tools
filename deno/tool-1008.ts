@@ -3,7 +3,7 @@
  * 将每个单词条目中的英式发音部分放在美式发音部分之后，
  * 并将例句中英式发音放在美式发音之后。
  */
-// 使用nodejs读取文本文件全部内容
+// 使用deno读取文本文件全部内容
 import * as fs from 'node:fs';
 import * as readline from 'node:readline';
 
